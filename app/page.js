@@ -23,8 +23,9 @@ export default function Home() {
   useEffect(() => {
     getData();
   }, [tasks]);
+  const baseURL = process.env.NEXT_PUBLIC_VERCEL_URL || "http://localhost:3000";
   const getData = async () => {
-    const response = await fetch("/api/tasks", {
+    const response = await fetch(`${baseURL}/api/tasks`, {
       method: "GET",
     });
     const data = await response.json();
