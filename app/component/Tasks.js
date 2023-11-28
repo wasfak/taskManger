@@ -5,10 +5,11 @@ import { useRouter } from "next/navigation";
 
 import React, { useState } from "react";
 
-export default function Tasks({ updateCounters, task, refreshData }) {
+export default function Tasks({ updateCounters, task }) {
   const [isClicked1, setIsClicked1] = useState(false);
   const [isClicked2, setIsClicked2] = useState(false);
   const [isClicked3, setIsClicked3] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
 
   const handleCheckboxClick = () => {
     setIsClicked1(!isClicked1);
@@ -26,14 +27,18 @@ export default function Tasks({ updateCounters, task, refreshData }) {
       body: JSON.stringify({ id }),
     });
     const response = await res.json();
-    if (response.status === 200) {
-      refreshData();
-    }
+    setIsCompleted(true);
   };
 
   return (
     <div className="flex flex-col justify-between border rounded-3xl p-8 space-y-6 shadow-2xl">
-      {/* Task 1 */}
+      {isCompleted ? (
+        <h1 className="text-xl font-bold text-red-900 text-center">
+          Completed!!
+        </h1>
+      ) : (
+        ""
+      )}
       <div className="flex items-center justify-between">
         <h3 className={isClicked1 ? `${ccClicked}` : "capitalize"}>
           {task.name}
@@ -64,18 +69,7 @@ export default function Tasks({ updateCounters, task, refreshData }) {
             {task.notes}
           </h3>
         </div>
-        <div className="flex items-center">
-          {/*           <input
-            type="checkbox"
-            id="checkbox3"
-            checked={isClicked3}
-            onChange={() => {
-              setIsClicked3(!isClicked3);
-              updateCounters(isClicked3 ? "decrement" : "increment");
-            }}
-            className="h-4 w-4 border border-gray-300 rounded focus:outline-none focus:border-gray-500"
-          /> */}
-        </div>
+        <div className="flex items-center"></div>
       </div>
 
       <span>
