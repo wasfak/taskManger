@@ -16,9 +16,9 @@ export default function Tasks({ updateCounters, task, refreshData }) {
   };
 
   const ccClicked = "line-through capitalize text-red-700";
-
+  const baseURL = process.env.NEXT_PUBLIC_VERCEL_URL || "http://localhost:3000";
   const handelComplete = async (id) => {
-    const res = await fetch("/api/deletetask", {
+    const res = await fetch(`${baseURL}/api/deletetask`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

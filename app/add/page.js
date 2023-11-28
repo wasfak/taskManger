@@ -19,8 +19,10 @@ export default function AddTask() {
 
   const handleAddTask = async (e) => {
     e.preventDefault();
+    const baseURL =
+      process.env.NEXT_PUBLIC_VERCEL_URL || "http://localhost:3000";
     try {
-      const response = await fetch("/api/addtask", {
+      const response = await fetch(`${baseURL}/api/addtask`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
