@@ -22,7 +22,7 @@ export default function Home() {
   };
   useEffect(() => {
     getData();
-  }, [tasks]);
+  }, []);
 
   const getData = async () => {
     const response = await fetch(`/api/tasks`, {
