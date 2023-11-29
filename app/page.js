@@ -10,7 +10,7 @@ export default function Home() {
 
   const handelGetData = async () => {
     try {
-      const response = await fetch(`/api/tasks`, {
+      const response = await fetch(`/api/tasks?cache=${Date.now()}`, {
         method: "GET",
       });
       const data = await response.json();
@@ -33,7 +33,7 @@ export default function Home() {
 
   return (
     <MainLayout>
-      <button onClick={handelGetData}>Click</button>
+      <button onClick={handelGetData}>Click here</button>
       {tasksLength ? (
         <div className="text-center flex items-center justify-center gap-x-4 text-2xl font-bold">
           <p>Total Tasks: {tasksLength}</p>
