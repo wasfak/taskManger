@@ -1,31 +1,27 @@
 "use client";
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState } from "react";
 import MainLayout from "./component/MainLayout";
 import Tasks from "./component/Tasks";
-import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const [totalTasks, setTotalTasks] = useState(0);
+  const [tasksLength, setTasksLength] = useState(0);
   const [doneTasks, setDoneTasks] = useState(0);
   const [tasks, setTasks] = useState([]);
-  const router = useRouter();
 
-  useEffect(() => {
-    const refreshData = async () => {
-      try {
-        const response = await fetch(`/api/tasks`, {
-          method: "GET",
-        });
-        const data = await response.json();
-        console.log(data);
-        setTasks(data.tasks);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+  const handelGetData = async () => {
+    try {
+      const response = await fetch(`/api/tasks`, {
+        method: "GET",
+      });
+      const data = await response.json();
 
-    refreshData();
-  }, []); // Empty dependency array ensures this effect runs once after the initial render
+      setTasks(data.tasks);
+      const tasksLength = data?.tasks.length;
+      setTasksLength(tasksLength);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   const updateCounters = (action) => {
     if (action === "increment") {
@@ -35,27 +31,27 @@ export default function Home() {
     }
   };
 
-  // Check if tasks is undefined before accessing its properties
-  const tasksLength = tasks ? tasks.length : 0;
-
   return (
     <MainLayout>
-      <div className="text-center flex items-center justify-center gap-x-4 text-2xl font-bold">
-        <p>Total Tasks: {tasksLength}</p>
-        <p>Completed Tasks: {doneTasks}</p>
-        <p>
-          Done:
-          {(tasksLength > 0
-            ? doneTasks < 0
-              ? doneTasks === 0
-                ? 0
-                : doneTasks
-              : (doneTasks / tasksLength) * 100
-            : 0
-          ).toFixed()}
-          %
-        </p>
-      </div>
+      <button onClick={handelGetData}>Click</button>
+      {tasksLength ? (
+        <div className="text-center flex items-center justify-center gap-x-4 text-2xl font-bold">
+          <p>Total Tasks: {tasksLength}</p>
+          <p>Completed Tasks: {doneTasks}</p>
+          <p>
+            Done:
+            {(tasksLength > 0
+              ? doneTasks < 0
+                ? doneTasks === 0
+                  ? 0
+                  : doneTasks
+                : (doneTasks / tasksLength) * 100
+              : 0
+            ).toFixed()}
+            %
+          </p>
+        </div>
+      ) : null}
 
       <div className="flex items-center justify-center mt-6 flex-wrap gap-x-16 gap-y-10">
         {tasks &&
